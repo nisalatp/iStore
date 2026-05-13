@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atelier BI | Attribute Security Matrix</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Playfair+Display:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#3d4759",
+                    "on-primary-container": "#633b3a",
+                    "primary-fixed": "#ffdad8",
+                    "surface-tint": "#7e5352",
+                    "on-background": "#1f1b1a",
+                    "surface-bright": "#fff8f7",
+                    "secondary-fixed": "#d9e3f9",
+                    "on-surface-variant": "#514443",
+                    "tertiary-fixed-dim": "#a9cfbc",
+                    "surface-container-highest": "#eae0df",
+                    "inverse-surface": "#342f2f",
+                    "on-secondary-fixed": "#121c2c",
+                    "inverse-on-surface": "#f9eeed",
+                    "on-primary-fixed": "#311212",
+                    "on-primary-fixed-variant": "#643c3b",
+                    "error": "#ba1a1a",
+                    "on-error-container": "#93000a",
+                    "secondary": "#555f71",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#e1d8d7",
+                    "secondary-container": "#d6e0f6",
+                    "on-tertiary-fixed": "#002115",
+                    "outline": "#837373",
+                    "on-error": "#ffffff",
+                    "background": "#fff8f7",
+                    "outline-variant": "#d5c2c1",
+                    "surface-container-low": "#fcf1f0",
+                    "on-tertiary-fixed-variant": "#2b4e3f",
+                    "surface-container-high": "#f0e6e5",
+                    "surface-container": "#f6eceb",
+                    "surface-variant": "#eae0df",
+                    "on-tertiary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#c4ebd7",
+                    "on-secondary-container": "#596376",
+                    "primary": "#7e5352",
+                    "inverse-primary": "#f1b9b7",
+                    "tertiary": "#426656",
+                    "on-primary": "#ffffff",
+                    "tertiary-container": "#97bdaa",
+                    "secondary-fixed-dim": "#bdc7dc",
+                    "on-surface": "#1f1b1a",
+                    "on-tertiary-container": "#2a4d3e",
+                    "primary-container": "#dda7a5",
+                    "primary-fixed-dim": "#f1b9b7",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#fff8f7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "section-gap": "64px",
+                    "margin-desktop": "40px",
+                    "unit": "8px",
+                    "margin-mobile": "16px",
+                    "gutter": "24px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "body-md": ["Outfit"],
+                    "label-caps": ["Outfit"],
+                    "headline-lg-mobile": ["Playfair Display"],
+                    "body-lg": ["Outfit"],
+                    "data-tabular": ["Outfit"],
+                    "headline-lg": ["Playfair Display"],
+                    "display-lg": ["Playfair Display"],
+                    "display-md": ["Playfair Display"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "data-tabular": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                    "headline-lg": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "display-md": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fff8f7;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(244, 227, 226, 0.4) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(217, 227, 249, 0.3) 0px, transparent 50%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-indicator {
+            box-shadow: 0 0 15px rgba(126, 83, 82, 0.2);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-fixed">
+<!-- SideNavBar (JSON Context: Shared Component 0) -->
+<aside class="fixed left-0 top-0 h-screen w-72 flex flex-col z-40 bg-white/40 dark:bg-black/40 backdrop-blur-xl border-r border-white/40 dark:border-white/10 shadow-[30px_0_60px_-15px_rgba(0,0,0,0.05)]">
+<div class="p-8">
+<div class="flex items-center gap-3 mb-10">
+<div class="w-10 h-10 rounded-xl bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container">diamond</span>
+</div>
+<div>
+<h1 class="font-display-md text-display-md text-primary leading-none">Atelier BI</h1>
+<p class="font-label-caps text-label-caps opacity-60">Enterprise Suite</p>
+</div>
+</div>
+<nav class="space-y-2">
+<a class="flex items-center gap-3 px-6 py-4 text-secondary dark:text-secondary-fixed-dim hover:scale-[1.02] hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-caps">Report Designer</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-secondary dark:text-secondary-fixed-dim hover:scale-[1.02] hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-caps">Virtual Attributes</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-4 text-secondary dark:text-secondary-fixed-dim hover:scale-[1.02] hover:bg-white/30 dark:hover:bg-black/30 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-label-caps">Model Config</span>
+</a>
+<!-- Active Item: Data Governance -->
+<a class="flex items-center gap-3 px-6 py-4 border-l-4 border-primary text-primary font-bold bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-label-caps">Data Governance</span>
+</a>
+</nav>
+</div>
+<div class="mt-auto p-8 space-y-2 border-t border-white/20">
+<a class="flex items-center gap-3 px-6 py-3 text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="font-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-3 px-6 py-3 text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-label-caps">Settings</span>
+</a>
+</div>
+</aside>
+<!-- TopAppBar (JSON Context: Shared Component 1) -->
+<header class="flex justify-between items-center px-10 ml-72 w-[calc(100%-18rem)] z-30 h-20 sticky top-0 bg-white/30 dark:bg-black/30 backdrop-blur-lg border-b border-white/40 dark:border-white/10 shadow-sm">
+<div class="flex items-center gap-4">
+<h2 class="font-headline-lg text-headline-lg font-semibold text-primary">Luxury Analytics</h2>
+</div>
+<div class="flex items-center gap-8">
+<div class="relative group">
+<input class="bg-surface-container/50 border-none rounded-full px-6 py-2 w-64 focus:ring-1 focus:ring-primary/30 transition-all font-body-md text-body-md" placeholder="Search resources..." type="text"/>
+<span class="material-symbols-outlined absolute right-4 top-2 text-on-surface-variant opacity-50">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary/5 transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-72 p-10 min-h-[calc(100vh-80px)]">
+<div class="max-w-7xl mx-auto space-y-10">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div>
+<h3 class="font-display-md text-display-md text-primary mb-2">Attribute Security Matrix</h3>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl">Define granular access levels for model attributes across the enterprise roles. Balance accessibility with uncompromising luxury privacy standards.</p>
+</div>
+<!-- Model Filter Dropdown -->
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps opacity-60 px-1">Active Data Model</label>
+<div class="relative min-w-[240px]">
+<select class="w-full appearance-none glass-panel px-6 py-3 rounded-xl font-body-md text-body-md text-on-surface focus:ring-2 focus:ring-primary/20 outline-none cursor-pointer">
+<option>User Profile Model</option>
+<option>Store Transaction Model</option>
+<option>Inventory Analytics</option>
+<option>Marketing Lead Engine</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-3 pointer-events-none opacity-40">expand_more</span>
+</div>
+</div>
+</div>
+<!-- The Matrix Table -->
+<section class="glass-panel rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.03)] border border-white/60">
+<div class="overflow-x-auto">
+<table class="w-full border-collapse text-left">
+<thead>
+<tr class="bg-[#F4E3E2] border-b border-outline-variant/30">
+<th class="px-8 py-6 font-label-caps text-label-caps text-secondary">Attributes</th>
+<th class="px-8 py-6 font-label-caps text-label-caps text-secondary text-center">Admin</th>
+<th class="px-8 py-6 font-label-caps text-label-caps text-secondary text-center">Store Manager</th>
+<th class="px-8 py-6 font-label-caps text-label-caps text-secondary text-center">Customer</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Row 1: ID -->
+<tr class="hover:bg-white/40 transition-colors group">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary/40">fingerprint</span>
+<span class="font-data-tabular text-data-tabular">id</span>
+</div>
+</td>
+<!-- Controls -->
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary" title="Unrestricted">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30" title="Masked">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30" title="Blocked">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary" title="Unrestricted">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30" title="Masked">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30" title="Blocked">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</button>
+<button class="w-8 h-8 rounded hover:bg-white/50 flex items-center justify-center opacity-30">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+</button>
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-error">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+</button>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 2: Name -->
+<tr class="hover:bg-white/40 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary/40">person</span>
+<span class="font-data-tabular text-data-tabular">name</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 3: Email (Masked for Manager) -->
+<tr class="hover:bg-white/40 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary/40">mail</span>
+<span class="font-data-tabular text-data-tabular">email</span>
+</div>
+</td>
+<td class="px-8 py-6 text-center">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 text-center">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-yellow-500"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6 text-center">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-yellow-500"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+</tr>
+<!-- Row 4: VA spend (Restricted) -->
+<tr class="hover:bg-white/40 transition-colors">
+<td class="px-8 py-6">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary/60">auto_awesome</span>
+<span class="font-data-tabular text-data-tabular italic text-primary">va:lifetime_spend</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-tertiary"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-error"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="flex justify-center">
+<div class="flex bg-surface-container-low rounded-lg p-1 gap-1">
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-tertiary"></span></button>
+<button class="w-8 h-8 rounded opacity-30"><span class="w-2 h-2 rounded-full bg-yellow-500"></span></button>
+<button class="w-8 h-8 rounded bg-white shadow-sm flex items-center justify-center text-error"><span class="w-2 h-2 rounded-full bg-error"></span></button>
+</div>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-8 flex justify-between items-center bg-surface-container-lowest/50">
+<div class="flex gap-8">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps opacity-60">Unrestricted Access</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-yellow-500"></span>
+<span class="font-label-caps text-label-caps opacity-60">Masked Sensitive Data</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span class="font-label-caps text-label-caps opacity-60">Blocked Access</span>
+</div>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 rounded-xl font-label-caps text-label-caps text-secondary border border-outline-variant hover:bg-white transition-all">Discard Changes</button>
+<button class="px-8 py-2 rounded-xl font-label-caps text-label-caps text-on-primary bg-primary hover:scale-[1.02] transition-all shadow-lg shadow-primary/20">Apply Matrix</button>
+</div>
+</div>
+</section>
+<!-- Audit Log / Info Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="glass-panel p-8 rounded-3xl border-l-4 border-l-primary/30">
+<h4 class="font-label-caps text-label-caps text-primary mb-4">Security Overview</h4>
+<p class="font-body-md text-body-md text-secondary">3 Virtual Attributes are currently being calculated for this model. Governance policies are synced with the Global Identity Provider.</p>
+</div>
+<div class="glass-panel p-8 rounded-3xl">
+<h4 class="font-label-caps text-label-caps text-primary mb-4">Recent Policy Change</h4>
+<div class="flex items-start gap-3">
+<img alt="Sophie Audit" class="w-10 h-10 rounded-full" data-alt="A professional portrait of a woman in a high-end office setting, soft editorial lighting, 8k resolution, minimalist luxury aesthetic with warm beige tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHGfIdef8qUPfPEJC6VOkWI-kKNj1RWqoD2LbzoQxaTEkyyL-PjMiVOexcfUiI_Mgnl1UdMihuVWO2tvhINKU4iems5-giwK4lXcNz0pEfaflIOll77hoMwsx5N6u6XE4HPR7Y4j13YynJ5Y__17r3XnbsGisf2JWka1ggUQX8Glbs_fmA8tVZEA0J_if4GbiUeKtv0xQnNrSrMAq0xERoHAd2q8k27PtWwqB6lvuJbfWaR5PmQESAY9qneTwgDJrhU9PCOKwmzjc"/>
+<div>
+<p class="font-body-md text-body-md font-medium">Sophie Laurent</p>
+<p class="text-sm opacity-60">Updated 'email' masking for Customers 2h ago</p>
+</div>
+</div>
+</div>
+<div class="bg-primary p-8 rounded-3xl shadow-xl shadow-primary/10 relative overflow-hidden">
+<div class="relative z-10">
+<h4 class="font-label-caps text-label-caps text-on-primary mb-4">Governance Score</h4>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-bold text-on-primary">98</span>
+<span class="text-on-primary opacity-60">/ 100</span>
+</div>
+<p class="text-sm text-on-primary/80 mt-4">Enterprise compliance standards met for GDPR and CCPA protocols.</p>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-10">
+<span class="material-symbols-outlined text-[120px]" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (JSON Context: Shared Component 2) -->
+<footer class="ml-72 w-[calc(100%-18rem)] px-10 flex justify-between items-center py-8 bg-surface-container-lowest/50 dark:bg-surface-dim/20 border-t border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-secondary opacity-50 mb-1">© 2024 Luxury Beauty Enterprise. All rights reserved.</span>
+<div class="flex gap-6">
+<a class="text-secondary font-body-md text-body-md hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="text-secondary font-body-md text-body-md hover:underline transition-all" href="#">Terms of Service</a>
+<a class="text-secondary font-body-md text-body-md hover:underline transition-all" href="#">API Documentation</a>
+</div>
+</div>
+<div class="font-label-caps text-label-caps text-primary/40 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">verified_user</span>
+            Secure Environment
+        </div>
+</footer>
+</body></html>

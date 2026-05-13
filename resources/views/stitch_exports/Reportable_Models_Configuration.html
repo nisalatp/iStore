@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atelier BI | Model Config</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Playfair+Display:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .ios-toggle:checked + .toggle-bg {
+            background-color: #7e5352; /* Primary Rose Gold */
+        }
+        .ios-toggle:checked + .toggle-bg .toggle-dot {
+            transform: translateX(20px);
+        }
+        .dimmed-overlay {
+            background: rgba(255, 248, 247, 0.6);
+            backdrop-filter: grayscale(0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3d4759",
+                        "on-primary-container": "#633b3a",
+                        "primary-fixed": "#ffdad8",
+                        "surface-tint": "#7e5352",
+                        "on-background": "#1f1b1a",
+                        "surface-bright": "#fff8f7",
+                        "secondary-fixed": "#d9e3f9",
+                        "on-surface-variant": "#514443",
+                        "tertiary-fixed-dim": "#a9cfbc",
+                        "surface-container-highest": "#eae0df",
+                        "inverse-surface": "#342f2f",
+                        "on-secondary-fixed": "#121c2c",
+                        "inverse-on-surface": "#f9eeed",
+                        "on-primary-fixed": "#311212",
+                        "on-primary-fixed-variant": "#643c3b",
+                        "error": "#ba1a1a",
+                        "on-error-container": "#93000a",
+                        "secondary": "#555f71",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#e1d8d7",
+                        "secondary-container": "#d6e0f6",
+                        "on-tertiary-fixed": "#002115",
+                        "outline": "#837373",
+                        "on-error": "#ffffff",
+                        "background": "#fff8f7",
+                        "outline-variant": "#d5c2c1",
+                        "surface-container-low": "#fcf1f0",
+                        "on-tertiary-fixed-variant": "#2b4e3f",
+                        "surface-container-high": "#f0e6e5",
+                        "surface-container": "#f6eceb",
+                        "surface-variant": "#eae0df",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#c4ebd7",
+                        "on-secondary-container": "#596376",
+                        "primary": "#7e5352",
+                        "inverse-primary": "#f1b9b7",
+                        "tertiary": "#426656",
+                        "on-primary": "#ffffff",
+                        "tertiary-container": "#97bdaa",
+                        "secondary-fixed-dim": "#bdc7dc",
+                        "on-surface": "#1f1b1a",
+                        "on-tertiary-container": "#2a4d3e",
+                        "primary-container": "#dda7a5",
+                        "primary-fixed-dim": "#f1b9b7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fff8f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Outfit"],
+                        "label-caps": ["Outfit"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-md": ["Playfair Display"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<nav class="fixed left-0 top-0 h-screen w-72 z-40 bg-white/40 backdrop-blur-xl border-r border-white/40 shadow-[30px_0_60px_-15px_rgba(0,0,0,0.05)] flex flex-col">
+<div class="px-8 py-10">
+<h1 class="font-display-md text-display-md text-primary mb-1">Atelier BI</h1>
+<p class="font-label-caps text-label-caps text-secondary tracking-widest opacity-70">Enterprise Suite</p>
+</div>
+<div class="flex-1 flex flex-col space-y-2 mt-4">
+<a class="flex items-center gap-3 px-8 py-4 text-secondary hover:bg-white/30 hover:scale-[1.02] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-caps text-label-caps">Report Designer</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-4 text-secondary hover:bg-white/30 hover:scale-[1.02] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps">Virtual Attributes</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-3 px-8 py-4 border-l-4 border-primary text-primary font-bold bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">Model Config</span>
+</a>
+<a class="flex items-center gap-3 px-8 py-4 text-secondary hover:bg-white/30 hover:scale-[1.02] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-label-caps">Data Governance</span>
+</a>
+</div>
+<div class="p-8 border-t border-white/20">
+<a class="flex items-center gap-3 py-3 text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="flex items-center gap-3 py-3 text-secondary hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</div>
+</nav>
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 right-0 h-20 w-[calc(100%-18rem)] z-30 bg-white/30 backdrop-blur-lg border-b border-white/40 flex justify-between items-center px-10 shadow-sm">
+<h2 class="font-headline-lg text-headline-lg font-semibold text-primary">Luxury Analytics</h2>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-white/50 border-none rounded-full w-64 focus:ring-1 focus:ring-primary/40 font-body-md" placeholder="Search systems..." type="text"/>
+</div>
+<button class="text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary-fixed flex items-center justify-center border border-white/60">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 mt-20 p-10 min-h-[calc(100vh-5rem)]">
+<!-- Header Section -->
+<section class="mb-12">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-primary font-label-caps text-label-caps tracking-widest block mb-2">MODEL ARCHITECTURE</span>
+<h3 class="font-display-md text-display-md text-on-surface">Data Model Configuration</h3>
+<p class="text-secondary font-body-md mt-2 max-w-2xl">Toggle the accessibility of core system models for the Luxury Analytics engine. Restricted models are excluded from cross-department reporting feeds.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-full font-label-caps text-label-caps hover:scale-[1.02] hover:shadow-lg transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="publish">publish</span>
+                    DEPLOY CHANGES
+                </button>
+</div>
+</section>
+<!-- Bento Grid Layout for Models -->
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Model Card: Active -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="person_outline">person_outline</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-2">User Directory</h4>
+<p class="text-secondary font-body-md mb-6 leading-relaxed">Centralized customer and staff profiles including tiered loyalty data and engagement history.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">142 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-tertiary">Global</span>
+</div>
+</div>
+</div>
+<!-- Model Card: Active -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-2">Product Catalog</h4>
+<p class="text-secondary font-body-md mb-6 leading-relaxed">Master list of luxury goods, variants, pricing tiers, and stock availability across all regions.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">218 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-tertiary">Global</span>
+</div>
+</div>
+</div>
+<!-- Model Card: Restricted/Off -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<!-- Dimmed Overlay -->
+<div class="absolute inset-0 dimmed-overlay z-10 pointer-events-none opacity-100"></div>
+<div class="relative z-20">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-error text-white font-label-caps text-[10px] px-2 py-0.5 rounded-full">RESTRICTED</span>
+<label class="relative inline-flex items-center cursor-pointer pointer-events-auto">
+<input class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface-variant mb-2">Payment Ledger</h4>
+<p class="text-secondary/60 font-body-md mb-6 leading-relaxed">Sensitive financial transaction logs and encrypted merchant gateway communications.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">84 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-error">Encrypted</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Model Card: Active -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-2">Order Fulfillment</h4>
+<p class="text-secondary font-body-md mb-6 leading-relaxed">Real-time order tracking, logistic chains, and boutique delivery scheduling records.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">310 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-tertiary">Global</span>
+</div>
+</div>
+</div>
+<!-- Model Card: Active -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface mb-2">Campaign Analytics</h4>
+<p class="text-secondary font-body-md mb-6 leading-relaxed">Marketing performance metrics, influencer ROI, and social sentiment data pipelines.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">92 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-tertiary">Global</span>
+</div>
+</div>
+</div>
+<!-- Model Card: Restricted/Off -->
+<div class="glass-card rounded-xl p-8 relative overflow-hidden group hover:shadow-xl transition-all duration-500">
+<div class="absolute inset-0 dimmed-overlay z-10 pointer-events-none opacity-100"></div>
+<div class="relative z-20">
+<div class="flex justify-between items-start mb-8">
+<div class="h-12 w-12 rounded-lg bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-error text-white font-label-caps text-[10px] px-2 py-0.5 rounded-full">RESTRICTED</span>
+<label class="relative inline-flex items-center cursor-pointer pointer-events-auto">
+<input class="sr-only ios-toggle" type="checkbox"/>
+<div class="toggle-bg w-11 h-6 bg-secondary/20 rounded-full transition-colors relative">
+<div class="toggle-dot absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform shadow-sm"></div>
+</div>
+</label>
+</div>
+</div>
+<h4 class="font-headline-lg text-headline-lg text-on-surface-variant mb-2">Internal Audit Logs</h4>
+<p class="text-secondary/60 font-body-md mb-6 leading-relaxed">Traceability records for administrator actions and database configuration alterations.</p>
+<div class="flex gap-4 pt-6 border-t border-white/20">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">FIELDS</span>
+<span class="font-data-tabular text-data-tabular">56 Params</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">VISIBILITY</span>
+<span class="font-data-tabular text-data-tabular text-error">Locked</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Decorative Area -->
+<section class="mt-section-gap grid grid-cols-12 gap-gutter items-center">
+<div class="col-span-7 h-[400px] rounded-2xl overflow-hidden relative shadow-2xl">
+<img alt="Premium workspace" class="w-full h-full object-cover" data-alt="A luxurious, minimalist office interior with high-end designer furniture and large windows looking out over a metropolitan skyline at dusk. The lighting is soft and golden, accentuating the clean architectural lines. The scene conveys a sense of high-performance analytics meeting sophisticated aesthetic design. The color palette is composed of soft creams, rose gold accents, and muted slate grays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0HW2Kf4Z7ciLHCiXyr4RmFhz9Jr6DEQi6fufxb5lTa6Czj73bTrziDszdAlEv4NVltN-J5qA8wzMEa-jjn7rkuRNODdt9pgkZuFGsZMecBbq9TRpJi_qYLHZvBXdFRz3gAErtQ7vq_7ORY0heSCXN19Mchzqim4xd7mLcNgzB9Irfs6fDyNG9mZTFlRX30tt6AUEdnruIFnxr61Jd3enoGnri3_nOpDa8QRqocLIIefrOETsnETCB0VHGwv4kyMPlz0_D4cuNJSs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<p class="text-white font-headline-lg text-headline-lg max-w-md">Precision meets prestige.</p>
+</div>
+</div>
+<div class="col-span-5 px-10">
+<h5 class="font-display-md text-display-md text-primary mb-4">Architecture Insight</h5>
+<p class="text-secondary font-body-lg mb-8">Our proprietary data modeling engine ensures that your enterprise BI environment remains clean, performant, and secure by allowing granular control over which system modules are exposed to the reporting layer.</p>
+<div class="space-y-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="auto_fix">auto_fix</span>
+<span class="font-body-md text-on-surface">Auto-balancing schema generation</span>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user">verified_user</span>
+<span class="font-body-md text-on-surface">SOC2 Compliant data masking</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer Shell -->
+<footer class="ml-72 w-[calc(100%-18rem)] px-10 py-8 bg-surface-container-lowest/50 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-secondary">© 2024 Luxury Beauty Enterprise. All rights reserved.</span>
+<div class="flex gap-8">
+<a class="text-secondary font-body-md hover:underline transition-all" href="#">Privacy Policy</a>
+<a class="text-secondary font-body-md hover:underline transition-all" href="#">Terms of Service</a>
+<a class="text-secondary font-body-md hover:underline transition-all" href="#">API Documentation</a>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,41 @@
+@startuml Virtual Attribute Builder Flow
+title Demo App Flow: Virtual Attribute Registration
+
+actor "Software Engineer\n(Admin)" as Admin
+participant "VA Playground UI" as UI
+participant "VirtualAttributeBuilderController" as Controller
+participant "VirtualAttributeBuilder" as Builder
+database "Database" as DB
+
+Admin -> UI : Open Virtual Attribute Tab
+activate UI
+
+alt Visual Mode
+    Admin -> UI : Select Model & Aggregation (e.g. SUM)
+    Admin -> UI : Select Mapped Key
+    UI -> UI : compileVisualSql()
+    note right: Flattens 3D Relationship to 2D SQL Fragment
+else Advanced Mode
+    Admin -> UI : Write Raw SQL Subquery
+end
+
+Admin -> UI : Click "Save Virtual Attribute"
+UI -> Controller : POST /va-builder/register\n(name, model, sqlFragment, dependencies)
+activate Controller
+
+Controller -> Builder : create(name)->forBaseModel()->withSqlFragment()->register()
+activate Builder
+Builder -> DB : Update/Create Record
+activate DB
+DB --> Builder : Success
+deactivate DB
+Builder --> Controller : VirtualAttribute Instance
+deactivate Builder
+
+Controller --> UI : Success Response
+deactivate Controller
+
+UI --> Admin : Show Success Notification
+deactivate UI
+
+@enduml
