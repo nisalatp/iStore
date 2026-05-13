@@ -8,11 +8,15 @@ However, executing that query securely and efficiently against a production data
 
 ## 1. Standard Generation (Development / Small Data)
 
-The `generate()` method compiles the AST and returns a standard Laravel `Illuminate\Database\Query\Builder` instance. 
+The `generate()` method compiles the AST and returns a standard Laravel `Illuminate\Database\Query\Builder` instance. Before you execute the query, you should always enforce Attribute Level Security (ALS) using the `GovernanceManager` to ensure the currently authenticated user is authorized to see the requested fields.
 
 **Code Example:**
 ```php
-$query = DynamicReport::generate($reportRequest);
+// Retrieve ALS rules for the current user's role
+$matrix = GovernanceManager::getMatrix($reportRequest->baseModel, Role::class, $user->role_id);
+
+// Generate the Query Builder and automatically inject masking logic based on the matrix
+$query = DynamicReport::generate($reportRequest, $matrix['attributes']);
 $results = $query->get();
 ```
 

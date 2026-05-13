@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
         // 1. Create Roles
         $adminRole = \App\Models\Role::create(['name' => 'Admin', 'description' => 'System Administrator']);
         $managerRole = \App\Models\Role::create(['name' => 'Store Manager', 'description' => 'Manages store inventory and reports']);
+        $analystRole = \App\Models\Role::create(['name' => 'Data Analyst', 'description' => 'Analyzes sales and customer data']);
+        $salesRole = \App\Models\Role::create(['name' => 'Sales Representative', 'description' => 'Handles direct customer sales']);
         $customerRole = \App\Models\Role::create(['name' => 'Customer', 'description' => 'Regular store customer']);
 
         // 2. Create Categories
@@ -37,6 +39,16 @@ class DatabaseSeeder extends Seeder
             'name' => 'Mark Manager',
             'email' => 'manager@istore.com',
             'role_id' => $managerRole->id,
+        ]);
+        $analyst = \App\Models\User::factory()->create([
+            'name' => 'Anna Analyst',
+            'email' => 'analyst@istore.com',
+            'role_id' => $analystRole->id,
+        ]);
+        $sales = \App\Models\User::factory()->create([
+            'name' => 'Sam Sales',
+            'email' => 'sales@istore.com',
+            'role_id' => $salesRole->id,
         ]);
 
         $customers = [];
@@ -138,5 +150,79 @@ class DatabaseSeeder extends Seeder
             'sql_fragment' => '(SELECT SUM(order_items.quantity * order_items.unit_price) FROM order_items JOIN products ON products.id = order_items.product_id WHERE products.category_id = categories.id)',
             'dependencies' => [\App\Models\Product::class, \App\Models\OrderItem::class],
         ]);
+
+        // 7. Seed Attribute Level Security (ALS) Rules using GovernanceManager
+        \Nisalatp\DynamicReportGenerator\Services\GovernanceManager::saveMatrix(
+            \App\Models\User::class,
+            \App\Models\Role::class,
+            $analystRole->id,
+            true,
+            ['email' => 'masked', 'password' => 'blocked', 'remember_token' => 'blocked'],
+            $admin->id
+        );
+
+        \Nisalatp\DynamicReportGenerator\Services\GovernanceManager::saveMatrix(
+            \App\Models\Payment::class,
+            \App\Models\Role::class,
+            $analystRole->id,
+            true,
+            ['amount' => 'masked'],
+            $admin->id
+        );
+
+        \Nisalatp\DynamicReportGenerator\Services\GovernanceManager::saveMatrix(
+            \App\Models\Payment::class,
+            \App\Models\Role::class,
+            $salesRole->id,
+            false, // Completely blocked
+            [],
+            $admin->id
+        );
+
+        \Nisalatp\DynamicReportGenerator\Services\GovernanceManager::saveMatrix(
+            \App\Models\Order::class,
+            \App\Models\Role::class,
+            $salesRole->id,
+            true,
+            ['total_amount' => 'masked'],
+            $admin->id
+        );
+
+        // 8. Create a Default Saved Report and Assign it
+        $reportPayload = [
+            'base_model' => \App\Models\Order::class,
+            'columns' => [
+                ['name' => 'id', 'alias' => 'Order ID'],
+                ['name' => 'status', 'alias' => 'Order Status'],
+                ['name' => 'total_amount', 'alias' => 'Total Amount'],
+                ['name' => 'users.name', 'alias' => 'Customer Name'],
+                ['name' => 'users.email', 'alias' => 'Customer Email'],
+                ['name' => 'payments.amount', 'alias' => 'Payment Amount'],
+                ['name' => 'payments.method', 'alias' => 'Payment Method'],
+            ],
+            'joins' => [
+                \App\Models\User::class,
+                \App\Models\Payment::class,
+            ],
+            'filters' => [
+                [
+                    'type' => 'condition',
+                    'column' => 'status',
+                    'operator' => '=',
+                    'value' => 'completed',
+                ]
+            ],
+            'limit' => 50,
+        ];
+
+        $savedReport = \Nisalatp\DynamicReportGenerator\Models\SavedReport::create([
+            'name' => 'Global Sales & Payments Overview',
+            'description' => 'A comprehensive view of completed orders, their associated customer details, and payment information.',
+            'payload' => $reportPayload,
+            'user_id' => $admin->id, // Created by Admin
+        ]);
+
+        // Assign to Analyst and Sales users
+        $savedReport->assignedUsers()->attach([$analyst->id, $sales->id]);
     }
 }

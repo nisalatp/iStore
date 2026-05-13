@@ -5,14 +5,20 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ReportBuilderController;
 use App\Http\Controllers\VirtualAttributeBuilderController;
+use App\Http\Controllers\AuthController;
 
 // Storefront Route
 Route::get('/', function () {
     return view('storefront.index');
 })->name('storefront.index');
 
-// Admin Routes
-Route::prefix('admin')->name('admin.')->group(function () {
+// Authentication Routes
+Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Admin Routes (Protected)
+Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/report-builder', [ReportBuilderController::class, 'index'])->name('report_builder');

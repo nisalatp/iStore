@@ -4,6 +4,7 @@ title Demo App Flow: Execute Saved Report Directly
 actor "End-User" as User
 participant "Demo App UI" as UI
 participant "ReportBuilderController" as Controller
+participant "ReportBuilderRequest\n(Factory)" as Factory
 participant "DynamicReport Engine" as Engine
 database "Database" as DB
 
@@ -18,7 +19,10 @@ activate DB
 DB --> Controller : SavedReport Instance (with Payload)
 deactivate DB
 
-Controller -> Controller : Deserialize Payload -> ReportRequest DTO
+Controller -> Factory : ReportBuilderRequest::createFromSavedReport(SavedReport)
+activate Factory
+Factory --> Controller : ReportBuilderRequest DTO
+deactivate Factory
 note right: Completely bypasses UI serialization.\nExecutes strictly from DB state.
 
 Controller -> Engine : DynamicReport::generate(ReportRequest)

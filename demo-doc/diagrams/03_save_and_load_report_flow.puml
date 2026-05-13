@@ -4,6 +4,7 @@ title Demo App Flow: Save & Load Report
 actor "End-User" as User
 participant "Demo App UI\n(AlpineJS)" as UI
 participant "ReportBuilderController" as Controller
+participant "ReportBuilderRequest\n(Factory)" as Factory
 database "Database" as DB
 
 == Saving a Report ==
@@ -12,7 +13,14 @@ activate UI
 UI -> UI : Serialize active AST
 UI -> Controller : POST /save (name, description, AST JSON)
 activate Controller
-Controller -> DB : Insert SavedReport
+
+Controller -> Factory : ReportBuilderRequest::createFromPayload(JSON)
+activate Factory
+Factory --> Controller : Validated AST Request
+deactivate Factory
+
+Controller -> DB : Insert SavedReport (AST Serialized)
+activate DB
 activate DB
 DB --> Controller : Success
 deactivate DB

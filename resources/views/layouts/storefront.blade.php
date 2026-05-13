@@ -138,14 +138,17 @@
             </div>
             <!-- Trailing Actions -->
             <div class="flex items-center gap-6">
-                <a href="{{ route('admin.dashboard') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
-                    <span class="material-symbols-outlined">shield_person</span>
-                    <span class="font-label-caps text-label-caps hidden lg:inline">Admin</span>
-                </a>
-                <button class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
-                    <span class="material-symbols-outlined">person</span>
-                    <span class="font-label-caps text-label-caps hidden lg:inline">Login</span>
-                </button>
+                @auth
+                    <a href="{{ route('admin.dashboard') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined">dashboard</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">Dashboard</span>
+                    </a>
+                @else
+                    <a href="{{ route('login') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined">login</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">Login</span>
+                    </a>
+                @endauth
                 <button class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
                     <span class="material-symbols-outlined">shopping_cart</span>
                     <span class="font-label-caps text-label-caps hidden lg:inline">Cart</span>

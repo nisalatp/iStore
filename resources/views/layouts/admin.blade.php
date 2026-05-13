@@ -189,12 +189,12 @@
         </div>
         <div class="p-6 border-t border-white/20">
             <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-full overflow-hidden border border-primary/20">
-                    <img alt="Admin User Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6u00MsTgchxhBvAoUlY1KOhuKDPzGPJtu0vuV4Lgg9kR_0dQRhS-cgnHuZdYSe0hYL8M7grmmv_rn-tpGuxEN6KCmDSwv0lkwyo7H8Cbc4ESGVFwi4noPu1Yuc_ZpHmMGdudM5UAZX3eA-isdlCGGtwuAOcjMYIo5zuIkVeTavWpB76eam_fDaFLJV5acZanEzd5oy7HUrNoCMuXpo2zCZwqkLqRZRWlsZHG17girK7MKeHr6_J9ecNMoSEoDxN8A_MTqmtwJCLU"/>
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+                    {{ substr(auth()->user()->name ?? 'A', 0, 1) }}
                 </div>
                 <div>
-                    <p class="font-label-caps text-label-caps text-primary">Senior Analyst</p>
-                    <p class="text-[11px] text-on-surface-variant">Admin Access</p>
+                    <p class="font-label-caps text-label-caps text-primary">{{ auth()->user()->name ?? 'Admin User' }}</p>
+                    <p class="text-[11px] text-on-surface-variant">{{ auth()->user()->role->name ?? 'Administrator' }}</p>
                 </div>
             </div>
             <a href="{{ route('admin.report_builder') }}" class="w-full block text-center py-3 bg-primary text-white rounded-lg font-label-caps text-label-caps hover:scale-[1.02] transition-transform shadow-lg shadow-primary/10">
@@ -218,9 +218,12 @@
                     <button class="w-10 h-10 rounded-full flex items-center justify-center text-secondary hover:bg-primary/10 transition-colors">
                         <span class="material-symbols-outlined">notifications</span>
                     </button>
-                    <button class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary/20">
-                        <img alt="Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXVjkSB-_61x74LBqZ_phFmesWE1VcbyTxIc6a0kwczts3BstNiYUkqL1ncNYJIfjZOuT4klqbp6bVBWmu7BvchSH6gnBd7fH1KY7isMdPtkkDwuS2nedOi7YGL0fHKaNIKfI7Mw6Kiv7X5WV57qqKuSd8dk2oB-GMQ7bFeuEckHf92HU5uwt9KuHmMg7LxAye9VouPnibKVpexAnNReIwqTW6OrtNXPNKfSPBaGgmgTc1T5hvrHyCQO9GomVBdlEgabdgwQmoKEs"/>
-                    </button>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="w-10 h-10 rounded-full flex items-center justify-center text-error hover:bg-error/10 transition-colors" title="Log Out">
+                            <span class="material-symbols-outlined">logout</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         </header>

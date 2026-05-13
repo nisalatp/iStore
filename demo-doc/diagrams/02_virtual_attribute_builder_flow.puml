@@ -4,6 +4,7 @@ title Demo App Flow: Virtual Attribute Registration
 actor "Software Engineer\n(Admin)" as Admin
 participant "VA Playground UI" as UI
 participant "VirtualAttributeBuilderController" as Controller
+participant "VirtualAttributeCompiler\n(Service)" as Compiler
 participant "VirtualAttributeBuilder" as Builder
 database "Database" as DB
 
@@ -13,8 +14,14 @@ activate UI
 alt Visual Mode
     Admin -> UI : Select Model & Aggregation (e.g. SUM)
     Admin -> UI : Select Mapped Key
-    UI -> UI : compileVisualSql()
-    note right: Flattens 3D Relationship to 2D SQL Fragment
+    UI -> Controller : POST /va-builder/compile
+    activate Controller
+    Controller -> Compiler : compileVisualPayload(JSON)
+    activate Compiler
+    Compiler --> Controller : SQL Fragment
+    deactivate Compiler
+    Controller --> UI : SQL Fragment Response
+    deactivate Controller
 else Advanced Mode
     Admin -> UI : Write Raw SQL Subquery
 end

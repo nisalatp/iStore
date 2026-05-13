@@ -7,22 +7,20 @@ A Virtual Attribute takes a complex 3D relational graph (e.g., `Users` -> `Order
 
 ## 1. Visual Mode Construction
 
-If an Admin does not want to write raw SQL, the frontend builds the subquery for them based on visual dropdowns.
+If an Admin does not want to write raw SQL, they use the visual dropdowns. The frontend collects these selections and passes them to the backend compilation service.
 
 ```javascript
-compileVisualSql() {
-    // We append 's' assuming standard Laravel table names
-    const targetTable = this.vaForm.visual.targetModel.toLowerCase() + 's';
-    const baseTable = this.vaForm.baseModel.toLowerCase() + 's';
-    
-    const agg = this.vaForm.visual.aggregation;
-    const col = this.vaForm.visual.targetColumn;
-
-    // We generate the raw Subquery Pushdown string
-    return `(SELECT ${agg}(${col}) FROM ${targetTable} WHERE ${targetTable}.${this.vaForm.baseModel.toLowerCase()}_id = ${baseTable}.id)`;
-}
+// Payload sent to backend compilation endpoint
+const payload = {
+    baseModel: 'User',
+    ast: [
+        { model: 'Order', name: 'total_amount', aggregateFunction: 'SUM' }
+    ],
+    builderMode: 'visual'
+};
 ```
-*Note: In a true production environment, we would use the backend PHP Reflection API to dynamically fetch the table names and foreign keys rather than guessing them with `.toLowerCase() + 's'` on the frontend.*
+
+Instead of the frontend trying to parse relationships and guess table names, the `VirtualAttributeCompiler` service on the PHP backend handles the translation. It uses the Eloquent Reflection API to safely dynamically generate the Subquery Pushdown string (`compileVisualPayload()`).
 
 ## 2. Registering the Attribute
 
@@ -30,9 +28,11 @@ Once the SQL fragment is generated (either visually or typed manually in Advance
 
 ```javascript
 async registerVirtualAttribute() {
-    const fragment = this.vaForm.mode === 'visual' 
-        ? this.compileVisualSql() 
-        : this.vaForm.advanced.sqlFragment;
+    // Note: The backend controller automatically intercepts the payload
+    // and delegates to VirtualAttributeCompiler if mode === 'visual'
+    const fragment = this.vaForm.mode === 'advanced' 
+        ? this.vaForm.advanced.sqlFragment 
+        : null;
 
     await fetch('/va-builder/register', {
         method: 'POST',

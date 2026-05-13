@@ -168,30 +168,48 @@ To maintain absolute security:
 
 ---
 
-## 7. Full Comprehensive Scenario Example
+## 7. Attribute Level Security (ALS) Interception
 
-**Scenario Description**: A business analyst wants to analyze active user purchasing behavior across specific product categories. They want to see the total revenue and order count, grouped by the user's country and the product's category. They only want to see groupings that generated more than $10,000 in revenue and had more than 5 orders.
+The Dynamic Report Generator is built with enterprise security in mind. It strictly enforces Attribute Level Security (ALS) via the `GovernanceManager` service. 
 
-**Models Used**: `User`, `Order`, `Product`.
+**This means the AST payload is considered untrusted.**
+
+When the backend receives the AST:
+1. It queries the `GovernanceManager` for the active security matrix of the authenticated user's Role.
+2. It traverses the `selectedAttributes`, `filters`, `groupBys`, and `sorts` within the AST.
+3. **Blocking**: If the AST attempts to query a model or column that is flagged as `blocked` for the user, the execution will immediately throw an `UnauthorizedException`.
+4. **Masking**: If the AST selects a column that is flagged as `masked` (e.g., `email`), the Engine dynamically intercepts the SQL generation and injects a database-level masking function (e.g., replacing `SELECT email` with `SELECT '***' AS email`).
+
+The frontend UI does not need to worry about writing secure queries or managing PII—the Engine guarantees data security at the compilation layer.
+
+---
+
+## 8. Full Comprehensive Scenario Example
+
+**Scenario Description**: A business analyst wants to analyze active user purchasing behavior. They want to see the total revenue, order count, and the user's pre-calculated **Lifetime Spend** (a Virtual Attribute), grouped by the user's country. They only want to see groupings that generated more than $10,000 in revenue and had more than 5 orders.
+
+**Models Used**: `User`, `Order`.
 
 ### How the Scenario Maps to the AST:
-1. **"analyze... purchasing behavior"**: We set `baseModel: "User"` and explicitly target `["Order", "Product"]` to enable joining across the graph.
+1. **"analyze... purchasing behavior"**: We set `baseModel: "User"` and explicitly target `["Order"]` to enable joining across the graph.
 2. **"total revenue and order count"**: We define two objects in the `aggregates` array using `SUM(Order.amount)` and `COUNT(Order.id)`.
-3. **"grouped by user's country and product's category"**: We pass multiple objects into the `groupBys` array for `User.country` and `Product.category`.
-4. **"active users... across Electronics and Software"**: We build an `innerFilters` group using `AND` logic. The first child is `User.status = 'active'`, and the second child is a nested group using `OR` logic (`Product.category = 'Electronics'` OR `Product.category = 'Software'`).
-5. **"generated more than $10,000... had more than 5 orders"**: We build an `outerFilters` group using `AND` logic. We use `"isVirtual": true` to reference the aggregated `amount` and `id` values from the `Order` model, applying the `>` operator to both to create the `HAVING` clause.
-6. **"ordered by highest revenue"**: We add a `sorts` object for `Order.total_revenue` (flagged as virtual) and set the direction to `DESC`.
+3. **"user's pre-calculated Lifetime Spend"**: We add the `lifetime_spend` Virtual Attribute to the `selectedAttributes` array (flagging `"isVirtual": true`).
+4. **"grouped by user's country"**: We pass an object into the `groupBys` array for `User.country`.
+5. **"active users"**: We build an `innerFilters` group using `AND` logic, checking if `User.status = 'active'`.
+6. **"generated more than $10,000... had more than 5 orders"**: We build an `outerFilters` group using `AND` logic. We use `"isVirtual": true` to reference the aggregated `amount` and `id` values from the `Order` model, applying the `>` operator to both to create the `HAVING` clause.
+7. **"ordered by highest revenue"**: We add a `sorts` object for `Order.total_revenue` (flagged as virtual) and set the direction to `DESC`.
 
-This massive payload demonstrates multiple joins (`targetModels`), multiple group bys, multiple aggregations, a complex recursive inner filter group, a complex recursive outer filter group, and dynamic sorting.
+This payload demonstrates joins (`targetModels`), grouping, aggregation, Virtual Attribute retrieval, a recursive inner filter group, a recursive outer filter group, and dynamic sorting.
 
 ```json
 {
   "baseModel": "User",
-  "targetModels": ["Order", "Product"],
-  "selectedAttributes": [],
+  "targetModels": ["Order"],
+  "selectedAttributes": [
+    { "modelClass": "User", "column": "lifetime_spend", "type": "integer", "isVirtual": true }
+  ],
   "groupBys": [
-    { "attribute": { "modelClass": "User", "column": "country", "type": "string" } },
-    { "attribute": { "modelClass": "Product", "column": "category", "type": "string" } }
+    { "attribute": { "modelClass": "User", "column": "country", "type": "string" } }
   ],
   "aggregates": [
     { 
@@ -214,24 +232,6 @@ This massive payload demonstrates multiple joins (`targetModels`), multiple grou
         "attribute": { "modelClass": "User", "column": "status", "type": "string" },
         "operator": "=",
         "value": "active"
-      },
-      {
-        "type": "group",
-        "logic": "or",
-        "children": [
-            {
-                "type": "leaf",
-                "attribute": { "modelClass": "Product", "column": "category", "type": "string" },
-                "operator": "=",
-                "value": "Electronics"
-            },
-            {
-                "type": "leaf",
-                "attribute": { "modelClass": "Product", "column": "category", "type": "string" },
-                "operator": "=",
-                "value": "Software"
-            }
-        ]
       }
     ]
   },
