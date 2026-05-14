@@ -6,6 +6,7 @@ use App\Http\Controllers\DemoController;
 use App\Http\Controllers\ReportBuilderController;
 use App\Http\Controllers\VirtualAttributeBuilderController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\McpAgentController;
 
 // Storefront Route
 Route::get('/', function () {
@@ -36,6 +37,9 @@ Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     
     Route::get('/reports', [App\Http\Controllers\SavedReportController::class, 'index'])->name('reports.index');
     Route::post('/reports/{id}/assign', [App\Http\Controllers\SavedReportController::class, 'assign'])->name('reports.assign');
+
+    Route::get('/mcp-agent', [McpAgentController::class, 'index'])->name('mcp_agent');
+    Route::post('/mcp-agent/chat', [McpAgentController::class, 'chat'])->name('mcp_agent.chat');
 });
 
 // Old API Routes

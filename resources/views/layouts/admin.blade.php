@@ -156,54 +156,58 @@
 </head>
 <body class="bg-background text-on-background font-body-md">
     <!-- Sidebar Navigation Shell -->
-    <nav class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface-container/60 backdrop-blur-2xl border-r border-white/40 w-72 shadow-[30px_0_60px_rgba(0,0,0,0.04)]">
-        <div class="p-8">
-            <h1 class="font-display-md text-display-md font-bold text-primary tracking-tighter">iStore Admin</h1>
-            <p class="font-label-caps text-label-caps text-on-surface-variant opacity-70 mt-1">Enterprise Suite</p>
+    <nav class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface-container/60 backdrop-blur-2xl border-r border-white/40 {{ request()->routeIs('admin.mcp_agent') ? 'w-20' : 'w-72' }} transition-all duration-300 shadow-[30px_0_60px_rgba(0,0,0,0.04)]">
+        <div class="p-8 {{ request()->routeIs('admin.mcp_agent') ? 'px-4' : '' }} flex flex-col items-center">
+            <h1 class="font-display-md {{ request()->routeIs('admin.mcp_agent') ? 'text-2xl text-center' : 'text-display-md' }} font-bold text-primary tracking-tighter">{{ request()->routeIs('admin.mcp_agent') ? 'iA' : 'iStore Admin' }}</h1>
+            <p class="font-label-caps text-label-caps text-on-surface-variant opacity-70 mt-1 {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Enterprise Suite</p>
         </div>
         <div class="flex-1 mt-4">
-            <a href="{{ route('admin.dashboard') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} px-6 py-4 transition-colors duration-200">
+            <a href="{{ route('admin.dashboard') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.dashboard') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="Overview">
                 <span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Overview</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Overview</span>
             </a>
-            <a href="{{ route('admin.report_builder') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.report_builder') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} px-6 py-4 transition-colors duration-200">
+            <a href="{{ route('admin.report_builder') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.report_builder') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="Report Builder">
                 <span class="material-symbols-outlined" data-icon="analytics" style="font-variation-settings: 'FILL' 1;">analytics</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Report Builder</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Report Builder</span>
             </a>
-            <a href="{{ route('admin.reports.index') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.reports.index') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} px-6 py-4 transition-colors duration-200">
+            <a href="{{ route('admin.reports.index') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.reports.index') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="Saved Reports">
                 <span class="material-symbols-outlined" data-icon="save">save</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Saved Reports</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Saved Reports</span>
             </a>
-            <a href="{{ route('admin.security') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.security') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} px-6 py-4 transition-colors duration-200">
+            <a href="{{ route('admin.security') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.security') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="Governance">
                 <span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Governance</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Governance</span>
             </a>
-            <a href="{{ route('admin.virtual_attributes.list') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.virtual_attributes*') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} px-6 py-4 transition-colors duration-200">
+            <a href="{{ route('admin.mcp_agent') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.mcp_agent') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="AI Agent">
+                <span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">AI Agent</span>
+            </a>
+            <a href="{{ route('admin.virtual_attributes.list') }}" class="nav-item flex items-center gap-3 {{ request()->routeIs('admin.virtual_attributes*') ? 'bg-primary-container/30 text-on-primary-container border-l-4 border-primary' : 'text-on-surface-variant hover:bg-white/20' }} {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 transition-colors duration-200" title="Virtual Attrs">
                 <span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Virtual Attrs</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Virtual Attrs</span>
             </a>
-            <a href="{{ route('storefront.index') }}" class="nav-item flex items-center gap-3 text-on-surface-variant px-6 py-4 hover:bg-white/20 transition-colors duration-200">
+            <a href="{{ route('storefront.index') }}" class="nav-item flex items-center gap-3 text-on-surface-variant {{ request()->routeIs('admin.mcp_agent') ? 'justify-center px-0' : 'px-6' }} py-4 hover:bg-white/20 transition-colors duration-200" title="Storefront">
                 <span class="material-symbols-outlined" data-icon="storefront">storefront</span>
-                <span class="font-label-caps text-label-caps uppercase tracking-widest">Storefront</span>
+                <span class="font-label-caps text-label-caps uppercase tracking-widest {{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">Storefront</span>
             </a>
         </div>
-        <div class="p-6 border-t border-white/20">
-            <div class="flex items-center gap-3 mb-6">
-                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg">
+        <div class="p-6 {{ request()->routeIs('admin.mcp_agent') ? 'px-2' : '' }} border-t border-white/20 flex flex-col items-center">
+            <div class="flex items-center gap-3 mb-6 {{ request()->routeIs('admin.mcp_agent') ? 'justify-center' : '' }}">
+                <div class="w-10 h-10 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold text-lg shrink-0">
                     {{ substr(auth()->user()->name ?? 'A', 0, 1) }}
                 </div>
-                <div>
+                <div class="{{ request()->routeIs('admin.mcp_agent') ? 'hidden' : '' }}">
                     <p class="font-label-caps text-label-caps text-primary">{{ auth()->user()->name ?? 'Admin User' }}</p>
                     <p class="text-[11px] text-on-surface-variant">{{ auth()->user()->role->name ?? 'Administrator' }}</p>
                 </div>
             </div>
-            <a href="{{ route('admin.report_builder') }}" class="w-full block text-center py-3 bg-primary text-white rounded-lg font-label-caps text-label-caps hover:scale-[1.02] transition-transform shadow-lg shadow-primary/10">
-                New Report
+            <a href="{{ route('admin.report_builder') }}" class="w-full block text-center py-3 bg-primary text-white rounded-lg font-label-caps text-label-caps hover:scale-[1.02] transition-transform shadow-lg shadow-primary/10" title="New Report">
+                {{ request()->routeIs('admin.mcp_agent') ? '+' : 'New Report' }}
             </a>
         </div>
     </nav>
 
-    <div class="ml-72 flex flex-col min-h-screen">
+    <div class="{{ request()->routeIs('admin.mcp_agent') ? 'ml-20' : 'ml-72' }} flex flex-col min-h-screen transition-all duration-300">
         <!-- Global TopAppBar Shell -->
         <header class="flex justify-between items-center px-10 z-30 h-20 shrink-0 bg-white/30 backdrop-blur-lg border-b border-white/40 shadow-sm sticky top-0">
             <h2 class="font-headline-lg text-headline-lg font-semibold text-primary">

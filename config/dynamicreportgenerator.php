@@ -12,6 +12,7 @@ return [
     */
     'reportable_models' => [
         \App\Models\User::class,
+        \App\Models\Role::class,
         \App\Models\Product::class,
         \App\Models\Order::class,
         \App\Models\OrderItem::class,

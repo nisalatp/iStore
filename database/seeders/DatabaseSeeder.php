@@ -89,11 +89,15 @@ class DatabaseSeeder extends Seeder
             $numOrders = rand(1, 8);
             for ($j = 0; $j < $numOrders; $j++) {
                 $orderStatus = ['pending', 'completed', 'completed', 'shipped'][rand(0, 3)];
+                $randomDate = now()->subDays(rand(0, 180));
+                
                 $order = \App\Models\Order::create([
                     'user_id' => $user->id,
                     'total_amount' => 0, // Calculate below
                     'status' => $orderStatus,
                     'shipping_address' => rand(100, 999) . ' Beauty Ave, NY',
+                    'created_at' => $randomDate,
+                    'updated_at' => $randomDate,
                 ]);
 
                 $orderTotal = 0;
@@ -113,6 +117,8 @@ class DatabaseSeeder extends Seeder
                         'product_id' => $product->id,
                         'quantity' => $qty,
                         'unit_price' => $product->price,
+                        'created_at' => $randomDate,
+                        'updated_at' => $randomDate,
                     ]);
                 }
 
@@ -125,6 +131,8 @@ class DatabaseSeeder extends Seeder
                     'amount' => $orderTotal,
                     'status' => $paymentStatus,
                     'method' => ['credit_card', 'paypal', 'apple_pay'][rand(0, 2)],
+                    'created_at' => $randomDate,
+                    'updated_at' => $randomDate,
                 ]);
             }
         }
