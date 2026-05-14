@@ -13,10 +13,28 @@ Route::get('/', function () {
     return view('storefront.index');
 })->name('storefront.index');
 
+Route::get('/collections', [\App\Http\Controllers\StorefrontController::class, 'collections'])->name('storefront.collections');
+Route::get('/category/{slug}', [\App\Http\Controllers\StorefrontController::class, 'category'])->name('storefront.category');
+
 // Authentication Routes
+Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [AuthController::class, 'register']);
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+// Storefront Authenticated Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/cart', [\App\Http\Controllers\StorefrontController::class, 'viewCart'])->name('cart.index');
+    Route::post('/cart/add', [\App\Http\Controllers\StorefrontController::class, 'addToCart'])->name('cart.add');
+    Route::post('/cart/remove', [\App\Http\Controllers\StorefrontController::class, 'removeFromCart'])->name('cart.remove');
+    
+    Route::get('/wishlist', [\App\Http\Controllers\StorefrontController::class, 'viewWishlist'])->name('wishlist.index');
+    Route::post('/wishlist/toggle', [\App\Http\Controllers\StorefrontController::class, 'toggleWishlist'])->name('wishlist.toggle');
+
+    Route::get('/checkout', [\App\Http\Controllers\StorefrontController::class, 'checkout'])->name('checkout.index');
+    Route::post('/checkout', [\App\Http\Controllers\StorefrontController::class, 'processCheckout'])->name('checkout.process');
+});
 
 // Admin Routes (Protected)
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {

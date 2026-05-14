@@ -483,7 +483,7 @@ PROMPT;
                         // Detect masking
                         if ($reportData && is_array($reportData)) {
                             foreach ($reportData as $row) {
-                                $rowArr = (array)$row;
+                                $rowArr = (array) $row;
                                 foreach ($rowArr as $col => $val) {
                                     if ($val === '***') {
                                         $maskingApplied[$col] = 'masked';
@@ -561,15 +561,15 @@ PROMPT;
                 'Authorization' => "Bearer {$this->apiKey}",
                 'Content-Type' => 'application/json',
             ])
-            ->timeout(60)
-            ->post($this->apiUrl, [
-                'model' => $this->model,
-                'messages' => $messages,
-                'tools' => $this->getToolDefinitions(),
-                'tool_choice' => 'auto',
-                'temperature' => 0.1,
-                'max_tokens' => 4096,
-            ]);
+                ->timeout(60)
+                ->post($this->apiUrl, [
+                    'model' => $this->model,
+                    'messages' => $messages,
+                    'tools' => $this->getToolDefinitions(),
+                    'tool_choice' => 'auto',
+                    'temperature' => 0.1,
+                    'max_tokens' => 4096,
+                ]);
 
             if ($response->successful()) {
                 return $response->json();

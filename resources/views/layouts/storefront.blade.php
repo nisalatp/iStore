@@ -128,9 +128,9 @@
         <div class="flex justify-between items-center w-full px-margin-desktop py-4 max-w-container-max mx-auto">
             <!-- Navigation Links -->
             <div class="hidden md:flex gap-8 items-center">
-                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="#">Collections</a>
-                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="#">Skincare</a>
-                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="#">Makeup</a>
+                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="{{ route('storefront.collections') }}">Collections</a>
+                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="{{ route('storefront.category', 'skincare') }}">Skincare</a>
+                <a class="font-medium text-on-surface-variant hover:scale-105 transition-transform duration-300 hover:text-primary" href="{{ route('storefront.category', 'makeup') }}">Makeup</a>
             </div>
             <!-- Centered Logo -->
             <div class="absolute left-1/2 -translate-x-1/2">
@@ -139,24 +139,78 @@
             <!-- Trailing Actions -->
             <div class="flex items-center gap-6">
                 @auth
+                    <div class="text-primary flex items-center gap-1 border-r border-outline-variant/30 pr-4">
+                        <span class="material-symbols-outlined">account_circle</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">{{ auth()->user()->name }}</span>
+                    </div>
+                    @if(auth()->user()->role && auth()->user()->role->name !== 'Customer')
                     <a href="{{ route('admin.dashboard') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
                         <span class="material-symbols-outlined">dashboard</span>
                         <span class="font-label-caps text-label-caps hidden lg:inline">Dashboard</span>
                     </a>
+                    @endif
+                    <a href="{{ route('wishlist.index') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined">favorite</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">Wishlist</span>
+                    </a>
+                    <a href="{{ route('cart.index') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined">shopping_cart</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">Cart</span>
+                    </a>
+                    <form action="{{ route('logout') }}" method="POST" class="inline">
+                        @csrf
+                        <button type="submit" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                            <span class="material-symbols-outlined">logout</span>
+                            <span class="font-label-caps text-label-caps hidden lg:inline">Logout</span>
+                        </button>
+                    </form>
                 @else
                     <a href="{{ route('login') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
                         <span class="material-symbols-outlined">login</span>
                         <span class="font-label-caps text-label-caps hidden lg:inline">Login</span>
                     </a>
+                    <a href="{{ route('register') }}" class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
+                        <span class="material-symbols-outlined">person_add</span>
+                        <span class="font-label-caps text-label-caps hidden lg:inline">Register</span>
+                    </a>
                 @endauth
-                <button class="text-primary hover:scale-105 transition-transform duration-300 flex items-center gap-1">
-                    <span class="material-symbols-outlined">shopping_cart</span>
-                    <span class="font-label-caps text-label-caps hidden lg:inline">Cart</span>
-                </button>
             </div>
         </div>
     </nav>
-    <main class="pt-20">
+    <main class="pt-20 relative">
+        <!-- Global Toast Notifications -->
+        <div x-data="{ 
+                show: false, 
+                message: '', 
+                type: 'success',
+                init() {
+                    @if(session('success'))
+                        this.message = '{{ session('success') }}';
+                        this.type = 'success';
+                        this.show = true;
+                        setTimeout(() => this.show = false, 3000);
+                    @elseif(session('error'))
+                        this.message = '{{ session('error') }}';
+                        this.type = 'error';
+                        this.show = true;
+                        setTimeout(() => this.show = false, 3000);
+                    @endif
+                }
+            }"
+            x-show="show"
+            x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 translate-y-[-1rem]"
+            x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300"
+            x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 translate-y-[-1rem]"
+            class="fixed top-24 left-1/2 transform -translate-x-1/2 z-[100] px-6 py-3 rounded-full shadow-lg font-body-md flex items-center gap-3"
+            :class="type === 'success' ? 'bg-primary-container text-on-primary-container' : 'bg-error-container text-on-error-container'"
+            style="display: none;">
+            <span class="material-symbols-outlined" x-text="type === 'success' ? 'check_circle' : 'error'"></span>
+            <span x-text="message"></span>
+        </div>
+
         @yield('content')
     </main>
     <!-- Footer -->
@@ -178,10 +232,10 @@
                 <div>
                     <h4 class="font-label-caps text-label-caps text-on-surface mb-6">Shop</h4>
                     <ul class="space-y-4 text-on-surface-variant font-body-md">
-                        <li><a class="hover:text-primary transition-colors" href="#">Best Sellers</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">New Arrivals</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Skincare</a></li>
-                        <li><a class="hover:text-primary transition-colors" href="#">Makeup</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="{{ route('storefront.collections') }}">Best Sellers</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="{{ route('storefront.collections') }}">New Arrivals</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="{{ route('storefront.category', 'skincare') }}">Skincare</a></li>
+                        <li><a class="hover:text-primary transition-colors" href="{{ route('storefront.category', 'makeup') }}">Makeup</a></li>
                     </ul>
                 </div>
                 <div>

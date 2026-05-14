@@ -42,6 +42,16 @@ class User extends Authenticatable implements DynamicReportSubject
         return $this->belongsTo(Role::class);
     }
 
+    public function cart()
+    {
+        return $this->hasOne(Cart::class);
+    }
+
+    public function wishlist()
+    {
+        return $this->hasOne(Wishlist::class);
+    }
+
     /**
      * Return the subjects (User and their Role) for the Dynamic Report Generator.
      */

@@ -16,6 +16,10 @@ return [
         \App\Models\Product::class,
         \App\Models\Order::class,
         \App\Models\OrderItem::class,
+        \App\Models\Cart::class,
+        \App\Models\CartItem::class,
+        \App\Models\Wishlist::class,
+        \App\Models\WishlistItem::class,
     ],
 
     /*

@@ -25,7 +25,7 @@
             <p class="text-on-surface-variant mt-2 font-body-md">Refined performance for the modern aesthetic.</p>
         </div>
         <div class="flex gap-4 mt-6 md:mt-0">
-            <button class="font-label-caps text-label-caps text-primary border-b border-primary pb-1">View All</button>
+            <a href="{{ route('storefront.collections') }}" class="font-label-caps text-label-caps text-primary border-b border-primary pb-1">View All</a>
         </div>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter">
@@ -33,22 +33,30 @@
         <!-- Product Card -->
         <div class="group relative bg-white rounded-lg p-4 transition-all duration-500 hover:shadow-[0_30px_60px_rgba(0,0,0,0.04)] border border-white/40">
             <div class="relative aspect-[4/5] overflow-hidden rounded-lg mb-6">
-                @php
-                    $images = [
-                        'https://lh3.googleusercontent.com/aida-public/AB6AXuDvYUKCkX78zegZiKYmhEJEUYY9cFmQbipSJrctd-kypYydGLKML2Yyti_qRYVWHeNsGGbwmOSQghstTslkPJABvaY0dCnLObMNOohxMhJNFjeA471-S92DQdDLQL6EnpGFba3IH_fiXdIMlaaphMK5PbiX9Oig488qfsUojWH0gmGKAGGgitziL7nzUUUrWK7WxjTEAUctboev5WDtTksNg6HBqfIyXlS0KcKJJAD9AuHLcR03m6Lg6WZs8leSQJuBaYbZFWFXUHE',
-                        'https://lh3.googleusercontent.com/aida-public/AB6AXuAXzKlzX8oyRc0v_y-rB99Z5lqlCL99m7nDDg7xEBupWJMCLfhKP4SowacxeoBFS7UtTlJW8blPuCDVTFB46PYx8vlPD6sV2Hu9WN3NBVZNBPWpc46xLYBU63UtmFC3RU_tIoAwYZdG2NKfOsKy8D1pSKNtqQQxAKQQxLvNA86hCcbkXD6DZ9ZhAB2ZVeo0-1QTnSAcWfRNE66yuKA4a_a_fMvyq-itI51r8RGrKy-XJ4fOptwjUstcuAbJQ-vKeYJ-d533MRcQPJk',
-                        'https://lh3.googleusercontent.com/aida-public/AB6AXuCDqYIFGTlmKgU9ox-CLFBDysKfA37oMpnqfIpZ83utckbKDX6syYItyv4bi9y3xdOhdX43jW4-EDe1_BMlIwFXz4rvliGc2hoj48n4lRbz0LcDqr3107uvO0tkN5ks-PfcjhpnOKfW5_a3FUewqckrIS5B1rhIcmXXih1KZ8qeE1c2HL89shRoJ_q7YeU0H9PoNIL_AdYaFwY-cll2MjPQQ4I2FDMT0MbA913xUd8ffrTrdkwL7SBpxkam-UEaA2Ux1ieh2Z4F3xo',
-                        'https://lh3.googleusercontent.com/aida-public/AB6AXuCFe17VUi6ji8ybVFACkFps4_gV47eouQgSuy8_i2z9E0O1kQYnZbEZWseyB_TQLOnfB_binS_voL-nEloGs-C-ykeO7kkj_5z2gYYX9jwBGL9dAXFF7N30gUSH_IkgVCug3iBCWpFnzRHYZDtWuogPbVVWh-tTPGttTkDv0bNqmeM4Jd3pp2mWit8MBTHuu7jrBr_4_gSO3P4wDtEbWqVIPKyJD7yHV7euk0DggUAdkRuHLJsD1NhQC02HUbyll_euf20RUBEbA1w'
-                    ];
-                @endphp
-                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="{{ $images[$loop->index % 4] }}"/>
+                <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" src="{{ $product->image_url }}"/>
                 @if($loop->first)
                 <div class="absolute top-3 left-3">
                     <span class="bg-primary-container/80 backdrop-blur-md px-3 py-1 rounded-full font-label-caps text-[10px] text-on-primary-container">BEST SELLER</span>
                 </div>
                 @endif
+                <div class="absolute top-3 right-3 z-10">
+                    <form action="{{ route('wishlist.toggle') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        @php
+                            $inWishlist = auth()->check() && auth()->user()->wishlist && auth()->user()->wishlist->items->contains('product_id', $product->id);
+                        @endphp
+                        <button type="submit" class="w-10 h-10 rounded-full bg-white/80 backdrop-blur flex items-center justify-center text-primary shadow-sm hover:scale-110 transition-transform" title="{{ $inWishlist ? 'Remove from Wishlist' : 'Add to Wishlist' }}">
+                            <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' {{ $inWishlist ? '1' : '0' }};">favorite</span>
+                        </button>
+                    </form>
+                </div>
                 <div class="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity flex items-end p-4">
-                    <button class="rose-gold-btn w-full py-3 rounded-full font-label-caps text-label-caps text-on-primary-container">Add to Cart</button>
+                    <form action="{{ route('cart.add') }}" method="POST" class="w-full">
+                        @csrf
+                        <input type="hidden" name="product_id" value="{{ $product->id }}">
+                        <button type="submit" class="rose-gold-btn w-full py-3 rounded-full font-label-caps text-label-caps text-on-primary-container">Add to Cart</button>
+                    </form>
                 </div>
             </div>
             <h3 class="font-display-md text-[20px] mb-1">{{ $product->name }}</h3>

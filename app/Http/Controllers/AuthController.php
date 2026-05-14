@@ -21,6 +21,47 @@ class AuthController extends Controller
     }
 
     /**
+     * Show the registration form.
+     */
+    public function showRegistrationForm()
+    {
+        if (Auth::check()) {
+            return redirect()->route('storefront.index');
+        }
+        
+        return view('storefront.register');
+    }
+
+    /**
+     * Handle user registration.
+     */
+    public function register(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+
+        $customerRole = \App\Models\Role::where('name', 'Customer')->first();
+
+        $user = \App\Models\User::create([
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'password' => \Illuminate\Support\Facades\Hash::make($validated['password']),
+            'role_id' => $customerRole ? $customerRole->id : null,
+        ]);
+
+        // Create default cart and wishlist for the new user
+        $user->cart()->create();
+        $user->wishlist()->create();
+
+        Auth::login($user);
+
+        return redirect()->route('storefront.index');
+    }
+
+    /**
      * Handle an authentication attempt.
      */
     public function login(Request $request)
